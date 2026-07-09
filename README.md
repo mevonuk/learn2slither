@@ -4,7 +4,7 @@
 
 A project about reinforcement learning (Q-learning). A snake agent learns to survive on a board whilst eating apples to change its length and avoiding hitting walls and itself.
 
-$\it{This project has been created as part of the 42 curriculum.}$
+\it{This project has been created as part of the 42 curriculum.}
 
 ### Contributor
 - M. Evonuk (https://github.com/mevonuk)
