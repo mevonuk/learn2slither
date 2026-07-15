@@ -12,7 +12,7 @@ activate:
 	@echo "source $(VENV)/bin/activate"
 
 norm:
-	flake8 *.py
+	$(PYTHON) -m flake8 *.py
 
 deactivate:
 	@echo "Run:"
