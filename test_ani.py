@@ -6,6 +6,8 @@ from Agent import Agent
 
 def main():
 
+    normal = 1
+
     # Initialize the game engine
     pygame.init()
 
@@ -43,16 +45,15 @@ def main():
     apples.append(new_apple(agent.snake, apples, 'GREEN'))
     apples.append(new_apple(agent.snake, apples, 'RED'))
 
+    # initalize state
+    agent.snake.get_state(apples)
+
     # set up clock for animation
     clock = pygame.time.Clock()
 
     # Loop until the user clicks the close button.
     done = False
     while not done:
-
-        for event in pygame.event.get():   # User did something
-            if event.type == pygame.QUIT:  # If user clicked close
-                done = True   # Flag that we are done to exit loop
 
         # Set the screen background
         screen.fill(WHITE)
@@ -90,19 +91,41 @@ def main():
         # update the screen
         pygame.display.flip()
 
-        # advance time
+        for event in pygame.event.get():   # User did something
+            if event.type == pygame.QUIT:  # If user clicked close
+                done = True   # Flag that we are done to exit loop
+            # if event.type == pygame.KEYDOWN:
+            #     if event.key == pygame.K_RETURN:
+
+            #         # advance time
+            #         clock.tick(1)
+            #         # clock.tick(3)
+
+            #         if agent.snake.alive:
+            #             # move snake
+            #             agent.move_snake(apples)
+            #             agent.snake.get_state(apples)
+            #         else:
+            #             # pause
+            #             clock.tick(1)
+            #             # generate new snake
+            #             agent.snake = Snake(board)
+            #             agent.snake.get_state(apples)
+
+
         clock.tick(3)
+        # clock.tick(3)
 
         if agent.snake.alive:
             # move snake
-            agent.move_snake_random(apples)
-            # agent.move_snake_safe(apples)
+            agent.move_snake(apples)
+            agent.snake.get_state(apples)
         else:
             # pause
             clock.tick(1)
             # generate new snake
             agent.snake = Snake(board)
-
+            agent.snake.get_state(apples)
 
 if __name__ == "__main__":
     main()

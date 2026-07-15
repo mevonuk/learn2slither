@@ -24,7 +24,17 @@ def get_random_step(last_move, s):
 
 
 def in_apple(apples, x, y):
-    """check if coords match another apple"""
+    """check if coords match an apple"""
     for a in apples:
         if a[0] == x and a[1] == y:
-            return True
+            return a[2]
+    return 0
+
+
+def in_wall(board, x, y):
+    """check if coords match a wall"""
+    if x == -1 or y == -1:
+        return True
+    if x == board.x_size or y == board.y_size:
+        return True
+    return False

@@ -71,3 +71,11 @@ For testng perposes the program has the following modules:
 - Interpreter
 - Agent
 
+
+## Current
+
+Wrote a dumby code to move snake looking for apples and wall given the state (its vision in the four directions)
+
+Need to now set up Q-learning to make its own rules instead of mine.
+
+Have commented out a code to step through with return key, this should be an option.
