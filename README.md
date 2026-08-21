@@ -79,3 +79,40 @@ Wrote a dumby code to move snake looking for apples and wall given the state (it
 Need to now set up Q-learning to make its own rules instead of mine.
 
 Have commented out a code to step through with return key, this should be an option.
+
+Need to save state into Q-tqble with best dir to move based on the rewards associated with taking a step in any dir
+
+need to assess the rewards for each dir given a state and choose the option with the highrest bf
+
+# Action space
+
+There are three actions available to the snake: forward, left, right.
+
+# State space
+
+The snake can see in 4 directions: forward, backward, left, right.
+
+The state uses the view of the snake to determine the distance to the nearest object (wall, apple, snake) and the rewards function to determine the danger of that object (wall or snake = death, green apple = benefit, blank space = no danger, red apple = small danger).
+
+The distance to the object can be normalized to allow model to be used on different size boards.
+
+d_norm = distance / total_grid_size
+
+d then sorted into (adjacent, near, mid, far)
+
+state = (
+    (distance to nearest object, object), left
+    (distance to nearest object, object), foreward
+    (distance to nearest object, object), right
+)
+
+# Q-table
+
+Then the Q-table would be:
+
+q-table = {
+    'forward': (distance to nearest object, object),
+    'right': (distance to nearest object, object),
+    'left': (distance to nearest object, object),
+}
+

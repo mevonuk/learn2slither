@@ -1,4 +1,4 @@
-from tools import get_random_step, in_apple, in_wall
+from tools import get_random_step, in_apple
 
 
 class Snake:
@@ -9,102 +9,21 @@ class Snake:
         self.alive = True
         self.board = board
         self.generate_snake()
-        self.state = []
-    
+
     def get_direction(self):
         # find forward direction
-        x_dir = self.body[-1][0] - self.previous[0]
-        y_dir = self.body[-1][1] - self.previous[1]
+        x_dir = self.head[0] - self.previous[0]
+        y_dir = self.head[1] - self.previous[1]
         if x_dir == 0:
             if y_dir == 1:
-                self.direction = "s"
+                return 3  # 3 / down / south
             else:
-                self.direction = "n"
+                return 1  # 1 / up / north
         elif y_dir == 0:
             if x_dir == 1:
-                self.direction = "e"
+                return 2  # 2 / east / right
             else:
-                self.direction = "w"
-
-
-    def get_state(self, apples):
-        # find view in four directions from head
-        x, y = self.body[-1]
-        self.get_direction()
-        # horizontal_view = []
-        # for i in range(-1, self.board.x_size + 1):
-        #     if in_wall(self.board, i, y):
-        #         horizontal_view.append('W')
-        #     elif i == x:
-        #         horizontal_view.append('H')
-        #     elif self.in_snake(i, y):
-        #         horizontal_view.append('S')
-        #     elif in_apple(apples, i, y):
-        #         horizontal_view.append(in_apple(apples, i, y)[0])
-        #     else:
-        #         horizontal_view.append('0')
-        # print(horizontal_view)
-        # vertical_view = []
-        # for i in range(-1, self.board.y_size + 1):
-        #     if in_wall(self.board, x, i):
-        #         vertical_view.append('W')
-        #     elif i == y:
-        #         vertical_view.append('H')
-        #     elif self.in_snake(x, i):
-        #         vertical_view.append('S')
-        #     elif in_apple(apples, x, i):
-        #         vertical_view.append(in_apple(apples, x, i)[0])
-        #     else:
-        #         vertical_view.append('0')
-        # print(vertical_view)
-
-        view_0 = []
-        for i in range(x - 1, -2, -1):
-            if in_wall(self.board, i, y):
-                view_0.append('W')
-            elif self.in_snake(i, y):
-                view_0.append('S')
-            elif in_apple(apples, i, y):
-                view_0.append(in_apple(apples, i, y)[0])
-            else:
-                view_0.append('0')
-        view_1 = []
-        for i in range(y - 1, -2, -1):
-            if in_wall(self.board, x, i):
-                view_1.append('W')
-            elif self.in_snake(x, i):
-                view_1.append('S')
-            elif in_apple(apples, x, i):
-                view_1.append(in_apple(apples, x, i)[0])
-            else:
-                view_1.append('0')
-        view_2 = []
-        for i in range(x + 1, self.board.x_size + 1):
-            if in_wall(self.board, i, y):
-                view_2.append('W')
-            elif self.in_snake(i, y):
-                view_2.append('S')
-            elif in_apple(apples, i, y):
-                view_2.append(in_apple(apples, i, y)[0])
-            else:
-                view_2.append('0')
-        view_3 = []
-        for i in range(y + 1, self.board.y_size + 1):
-            if in_wall(self.board, x, i):
-                view_3.append('W')
-            elif self.in_snake(x, i):
-                view_3.append('S')
-            elif in_apple(apples, x, i):
-                view_3.append(in_apple(apples, x, i)[0])
-            else:
-                view_3.append('0')
-
-        self.state = [view_0, view_1, view_2, view_3]
-        print('state')
-        print('west', self.state[0])
-        print('north', self.state[1])
-        print('east', self.state[2])
-        print('south', self.state[3])
+                return 0  # 0 / west / left
 
     def generate_snake(self):
         self.body = []
@@ -117,8 +36,9 @@ class Snake:
                 if not bad:
                     self.body.append((x, y))
                     good = True
-        
+
         self.previous = self.body[-2]
+        self.head = self.body[-1]
 
     def random_segment(self):
         """choose a random step for snake segment:
@@ -160,7 +80,7 @@ def new_apple(snake, apples, color):
     return (x, y, color)
 
 
-def eat_apple(snake, apples, a):
+def eat_apple(snake, apples, a, green_reward, red_penalty):
     """snake eats apple,
     faces concequences,
     and a new apple is generated"""
@@ -169,12 +89,14 @@ def eat_apple(snake, apples, a):
         # shrink snake
         snake.pop_snake()
         b = new_apple(snake, apples, 'RED')
+        reward = red_penalty
     else:
         # don't pop the snake, let it grow
         pop_it = False
         b = new_apple(snake, apples, 'GREEN')
+        reward = green_reward
     # remove eaten apple
     apples.pop(a)
     # add new apple
     apples.append(b)
-    return pop_it
+    return pop_it, reward

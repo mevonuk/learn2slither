@@ -1,6 +1,63 @@
 import random
 
 
+def get_random_action():
+    direction = random.randrange(0, 3, 1)
+    # print('random direction', direction)
+    if direction == 0:
+        return 'left'
+    elif direction == 1:
+        return 'forward'
+    else:
+        return 'right'
+
+
+def get_step(x, y, orientation, action):
+    if action == 'forward':
+        dir = orientation
+    elif action == 'right':
+        dir = (orientation + 1) % 4
+    else:
+        dir = (orientation - 1 + 4) % 4
+
+    if dir == 0:
+        x -= 1
+    elif dir == 1:
+        y -= 1
+    elif dir == 2:
+        x += 1
+    else:
+        y += 1
+    return x, y
+
+
+def get_action(dir, orientation):
+    if dir == orientation:
+        return 'forward'
+    elif dir == (orientation + 1) % 4:
+        return 'right'
+    elif dir == (orientation - 1 + 4) % 4:
+        return 'left'
+    else:
+        return 'error'
+
+
+def get_movement_direction(x1, y1, x0, y0, orientation):
+    # find forward direction
+    x_dir = x1 - x0
+    y_dir = y1 - y0
+    if x_dir == 0:
+        if y_dir == 1:
+            return get_action(3, orientation)
+        else:
+            return get_action(1, orientation)
+    elif y_dir == 0:
+        if x_dir == 1:
+            return get_action(2, orientation)
+        else:
+            return get_action(0, orientation)
+
+
 def get_random_step(last_move, s):
     """generate a random step from s"""
     found = False
