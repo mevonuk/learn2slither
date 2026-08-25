@@ -42,7 +42,7 @@ For testing purposes the program has the following modules:
 
 ## Environment
 
-The environment consists of the board, the apples, and the snake. It receives an action from the agent which it then executes by moving the snake. The movement of the snake results in a reward (based on hitting the wall or tail, eating an apple, or entering an empty space). The snakes view and the reward following the step are passed to the interpreter and then the agent.
+The environment consists of the board, the apples, and the snake. It receives an action from the agent which it then executes by moving the snake. The movement of the snake results in a reward (based on hitting the wall or tail, eating an apple, or entering an empty space). The snake's view and the reward following the step are passed to the interpreter and then the agent.
 
 ### Board
 
@@ -54,9 +54,9 @@ A list of three apples (two green and one red) is maintained in the environment.
 
 ### Snake
 
-The snake starts with three segments, randomly located on the board. The snake can see in the four board directions from its head. This is it's view. The view is passed to the interpreter to create a state, which is then given to the agent.
+The snake starts with three segments, randomly located on the board. The snake can see in the four board directions from its head. This is its view. The view is passed to the interpreter to create a state, which is then given to the agent.
 
-If the snake dies, and additional sessions exist, the snake is reset to the default length at a random spot on the board.
+If the snake dies, the snake is reset to the default length at a random spot on the board.
 
 ## Interpreter
 
@@ -64,27 +64,27 @@ The interpreter converts the snake view into a state for the agent. In addition,
 
 ### State
 
-The interpreter creates a state by determining the nearest object in three views: forward, left, and right. The state objects are green apple, red apple, wall, and tail. The distance classes to the object are adjacent, near, mid, and far. This greatly reduces the total possible number of states. However, note that, in order to learn not to eat its own tail, the training must run long enough for the snake to have grown to sufficient lengths to have seen its own tail in the various action directions.
+The interpreter creates a state by determining the nearest object in three views: forward; left; and right. The state objects are green apple, red apple, wall, and tail. The distance classes to the object are adjacent, near, mid, and far. This greatly reduces the total possible number of states. However, note that, in order to learn not to eat its own tail, the training must run long enough for the snake to have grown to sufficient lengths to have seen its own tail in the various action directions and at the various distances.
 
-The distance to the object can be normalized to allow model to be used on different size boards.
+The distance to the object can be normalized to allow the model to be used on different size boards than it was trained on.
 
 $d_{norm}$ = distance / total_grid_size
 
 $d_{norm}$ is then sorted into (adjacent, near, mid, far)
 
 state = (
-    (distance to nearest object, object) left
-    (distance to nearest object, object) forward
-    (distance to nearest object, object) right
+- (distance to nearest object, object) left
+- (distance to nearest object, object) forward
+- (distance to nearest object, object) right
 )
 
 ## Agent
 
 The agent receives the state from the interpreter and the reward passed from the environment following a movement.
 
-The snake can see all the way to the wall but only in 4 directions with respect to its head, north, south, east, and west. The interpreter converts this to a state. The agent must decide on the next action based only on this information and that saved in the q-table.
+The snake can see all the way to the wall but only in 4 directions with respect to its head, north, south, east, and west. The interpreter converts this to a state. The agent must decide on the next action based only on this information (and the corresponding information saved in the q-table).
 
-The actions the snake can take are to step forward, step left, or step right. The snake cannot step backwards because this will result in death.
+The actions the snake can take are to step forward, step left, or step right. The snake cannot step backwards because this will result in death (except in the case of zero length; however, this case is not treated).
 
 Actions chosen by the agent will evolve through time based on positive and negative rewards and subsequent updates to the q-table. For example:
 - eating a green apple = positive reward
@@ -110,7 +110,7 @@ Here,
 
 ### Q-table
 
-The Q-table would contain the q-values for each state and action:
+The Q-table contains the q-values for each state and action:
 
 q-table = {
     $state_i$ : {'left': $q_l$, 'forward': $q_f$, 'right': $q_r$}
@@ -118,7 +118,7 @@ q-table = {
 
 ### Training versus exploitation
 
-To balance between exploration and exploitation, the $\epsilon$-greedy policy is used. With probability $1-\epsilon$, the agent picks the action with the highest Q-value, exploiting the information in the Q-table, using current knowledge to maximize the rewards. With probability $\epsilon$, the agent chooses a random action to explore new possibilities.
+To balance between exploration and exploitation, the epsilon-greedy policy is used. With probability $1-\epsilon$, the agent picks the action with the highest Q-value, exploiting the information in the Q-table, using current knowledge to maximize the rewards. With probability $\epsilon$, the agent chooses a random action to explore new possibilities.
 
 Learned models can be imported and exported and are independent of board size.
 
@@ -131,14 +131,14 @@ The main program (slither_main.py) can be run with various display and training 
 Options
 - sessions : number of snake deaths to run before program terminates
 - explore
-    - yes : default, includes random exploration of the action space
+    - yes : (default) includes random exploration of the action space
     - no : pure exploitation of the q-table
 - display
-    - on : default, shows the board, apples, snake, and the snake's movement during the session
+    - on : (default) shows the board, apples, snake, and the snake's movement during the session
     - off : runs the program without a graphics display
 - step
     - on : runs the program step-by-step to observe the snake's movement action by action. Prints the snake's view to the console, as well as the direction that the step was taken in. Requires that display='on'
-    - off : default, display is continuous
+    - off : (default) display is continuous
 - load : name of the model (q-table) to be loaded
 - save : filename to which to save generated q-table
 
