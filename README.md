@@ -30,7 +30,7 @@ The snake (blue) seeks to have a length of 10 or more and to last as long as pos
 - If the snake eats a red apple, it's length decreases by 1 and a new red apple appears randomly on the board.
 - If the snake's length decreases to 0, the snake dies.
 
-# Modular design
+### Modular design
 
 For testing purposes the program has the following modules:
 - Environment
@@ -124,7 +124,7 @@ Learned models can be imported and exported and are independent of board size.
 
 Learning can be disabled to allow the model to be tested.
 
-# Program options
+## Program options
 
 The main program (slither_main.py) can be run with various display and training options.
 
@@ -147,7 +147,7 @@ Additional commands in display mode:
 - pressing the TAB key kills the snake and initializes a new snake instance
 - closing the display window terminates the program saving the latest q-table to the save filename
 
-# To run
+## To run
 
 To set up virtual environment run:
 - make setup
