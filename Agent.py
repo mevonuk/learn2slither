@@ -23,6 +23,7 @@ class Agent:
         """check if state is in table,
         if not, add with zero values"""
         if state not in self.q_table:
+            print('new state', state)
             self.q_table[state] = {
                 "left": 0.0,
                 "forward": 0.0,
@@ -50,7 +51,7 @@ class Agent:
         max_q = max(self.q_table[state].values())
         min_q = min(self.q_table[state].values())
         if max_q == min_q:
-            print('even state', state)
+            # print('even state', state)
             action = get_random_action()
         elif self.explore and random.random() < self.epsilon:
             action = get_random_action()

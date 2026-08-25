@@ -56,12 +56,23 @@ def get_nearest_object(view, size):
 
 def get_scaled_distance(d, size):
     """returning normalized distance range"""
-    d_norm = d / size * 10
-    if d_norm == 0:
-        return 'adj'
-    elif d_norm > 0 and d_norm <= 3:
-        return 'near'
-    elif d_norm > 3 and d_norm <= 7:
-        return 'mid'
+    if size > 3:
+        d_norm = d / size * 10
+        if d_norm == 0:
+            return 'adj'
+        elif d_norm > 0 and d_norm <= 3:
+            return 'near'
+        elif d_norm > 3 and d_norm <= 7:
+            return 'mid'
+        else:
+            return 'far'
     else:
-        return 'far'
+        d_norm = d
+        if d_norm == 0:
+            return 'adj'
+        elif d_norm == 1:
+            return 'near'
+        elif d_norm == 2:
+            return 'mid'
+        else:
+            return 'far'

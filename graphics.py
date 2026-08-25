@@ -9,8 +9,8 @@ def draw_board(screen, X_SIZE, Y_SIZE):
     SCREEN_X, SCREEN_Y = screen.get_size()
 
     # variables for drawing
-    start_x = SCREEN_X / X_SIZE
-    start_y = SCREEN_Y / Y_SIZE
+    start_x = 10
+    start_y = 10
     end_x = SCREEN_X - start_x * 2
     end_y = SCREEN_Y - start_y * 2
 
@@ -34,8 +34,8 @@ def draw_apples(screen, environment, GREEN, RED, X_SIZE, Y_SIZE):
     SCREEN_X, SCREEN_Y = screen.get_size()
 
     # variables for drawing
-    start_x = SCREEN_X / X_SIZE
-    start_y = SCREEN_Y / Y_SIZE
+    start_x = 10
+    start_y = 10
     end_x = SCREEN_X - start_x * 2
     end_y = SCREEN_Y - start_y * 2
 
@@ -56,8 +56,8 @@ def draw_snake(screen, environment, X_SIZE, Y_SIZE):
     SCREEN_X, SCREEN_Y = screen.get_size()
 
     # variables for drawing
-    start_x = SCREEN_X / X_SIZE
-    start_y = SCREEN_Y / Y_SIZE
+    start_x = 10
+    start_y = 10
     end_x = SCREEN_X - start_x * 2
     end_y = SCREEN_Y - start_y * 2
 

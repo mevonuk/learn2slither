@@ -25,7 +25,7 @@ class Snake:
                 return 0  # 0 / west / left
 
     def generate_snake(self):
-        """randomly initialize a snake of default mength"""
+        """randomly initialize a snake of default length"""
         self.alive = True
         self.body = []
         self.length = self.base_length
@@ -33,7 +33,9 @@ class Snake:
         self.body.append((x, y))
         for i in range(self.length - 1):
             good = False
-            while not good:
+            patience = 0
+            while not good and patience < 10:
+                patience += 1
                 x, y, bad = self.random_segment()
                 if not bad:
                     self.body.append((x, y))

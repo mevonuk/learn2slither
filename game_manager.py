@@ -18,9 +18,17 @@ def run_snake(sessions, explore, model_input, model_output, step, display):
     RED_PENALTY = -10
 
     # set sizes of board
-    X_SIZE = 10
-    Y_SIZE = 10
+    X_SIZE = 20
+    Y_SIZE = 20
     aspect = X_SIZE / Y_SIZE
+    # board must exceed 6 in size
+    if X_SIZE * Y_SIZE < 6:
+        print('board size is insufficient')
+        exit()
+    # board must exceed 1 in width/height
+    if X_SIZE < 2 or Y_SIZE < 2:
+        print('board too narrow')
+        exit()
 
     # restart length of snake
     LENGTH = 3
@@ -177,6 +185,9 @@ def set_snake(environment, agent, interpreter):
     """set/reset snake in environment"""
     # initialize snake
     environment.snake.generate_snake()
+    # put out a new set of apples
+    environment.apples = []
+    environment.initialize_apple_list()
     # environment - get snake view and direction
     view, direction = environment.get_snake_view()
     # interpreter - get state

@@ -24,7 +24,7 @@ def main():
     parser.add_argument(
         "--load",
         type=str,
-        default="models/q_table.pkl",
+        default="models/q_table10000.pkl",
         help="Name of loaded model"
     )
 

@@ -153,7 +153,9 @@ class Environment:
 def new_apple(snake, apples, color):
     """generate a new apple"""
     found = False
-    while not found:
+    patience = 0
+    while not found and patience < 20:
+        patience += 1
         x, y = snake.board.get_random_coords()
         # need to check if coordinate is already occupied
         if in_apple(apples, x, y) == 0 and not snake.in_snake(x, y):
