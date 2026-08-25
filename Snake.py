@@ -1,17 +1,16 @@
-from tools import get_random_step, in_apple
+import random
 
 
 class Snake:
     """snake class"""
     def __init__(self, board, length=3):
 
-        self.length = length
-        self.alive = True
+        self.base_length = length
         self.board = board
         self.generate_snake()
 
     def get_direction(self):
-        # find forward direction
+        """find forward moving direction of snake"""
         x_dir = self.head[0] - self.previous[0]
         y_dir = self.head[1] - self.previous[1]
         if x_dir == 0:
@@ -26,7 +25,10 @@ class Snake:
                 return 0  # 0 / west / left
 
     def generate_snake(self):
+        """randomly initialize a snake of default mength"""
+        self.alive = True
         self.body = []
+        self.length = self.base_length
         x, y = self.board.get_random_coords()
         self.body.append((x, y))
         for i in range(self.length - 1):
@@ -36,7 +38,6 @@ class Snake:
                 if not bad:
                     self.body.append((x, y))
                     good = True
-
         self.previous = self.body[-2]
         self.head = self.body[-1]
 
@@ -68,35 +69,23 @@ class Snake:
         self.length = len(self.body)
 
 
-def new_apple(snake, apples, color):
-    """generate a new apple"""
+def get_random_step(last_move, s):
+    """generate a random step from s"""
     found = False
     while not found:
-        x, y = snake.board.get_random_coords()
-        # need to check if coordinate is already occupied
-        if in_apple(apples, x, y) == 0 and not snake.in_snake(x, y):
+        direction = random.randrange(0, 4, 1)
+        x = s[0]
+        y = s[1]
+        if direction == 0:
+            x += 1
+        elif direction == 1:
+            y += 1
+        elif direction == 2:
+            x -= 1
+        else:
+            y -= 1
+        if x == last_move[0] and y == last_move[1]:
+            found = False
+        else:
             found = True
-
-    return (x, y, color)
-
-
-def eat_apple(snake, apples, a, green_reward, red_penalty):
-    """snake eats apple,
-    faces concequences,
-    and a new apple is generated"""
-    pop_it = True
-    if apples[a][2] == 'RED':
-        # shrink snake
-        snake.pop_snake()
-        b = new_apple(snake, apples, 'RED')
-        reward = red_penalty
-    else:
-        # don't pop the snake, let it grow
-        pop_it = False
-        b = new_apple(snake, apples, 'GREEN')
-        reward = green_reward
-    # remove eaten apple
-    apples.pop(a)
-    # add new apple
-    apples.append(b)
-    return pop_it, reward
+    return x, y

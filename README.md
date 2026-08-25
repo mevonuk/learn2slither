@@ -16,11 +16,11 @@ A project about reinforcement learning (Q-learning). A snake agent learns to sur
 
 ### Board
 
-A board is created with a default size of 10x10. The board contains a randomly placed red apple and two randomly placed green apples. A snake of length 3 units is randomly placed on the board.
+A board is created with a default size of 10 x 10. The board contains a randomly placed red apple and two randomly placed green apples. A snake of length 3 units is randomly placed on the board.
 
 ### Goal of the snake
 
-The snake (blue) seeks to have a length of 10 or more and to last as long as possible without dying.
+The snake (blue) seeks to have a length of 10 or more and to last as long as possible without dying. This goal is not explicitly given to the snake, but is encouraged by the rewards and penalties.
 
 ### Rules
 

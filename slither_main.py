@@ -1,78 +1,70 @@
 import argparse
+from game_manager import run_snake
 
 
 def main():
     """Read in preferences and direct program as appropriate"""
     parser = argparse.ArgumentParser(
-        description="create a map, train a snake")
-
-    parser.add_argument(
-        "--program_mode",
-        type=str,
-        default="all",
-        choices=["map", "all"],
-        help="Mode of program execution"
-    )
+        description="create a board, train a snake")
 
     parser.add_argument(
         "--sessions",
         type=int,
-        default=1,
+        default=10,
         help="Number of training sessions"
     )
 
     parser.add_argument(
         "--save",
         type=str,
-        default="model/model1.txt",
+        default="models/q_table.pkl",
         help="Name of saved model"
     )
 
     parser.add_argument(
         "--load",
         type=str,
-        default=None,
+        default="models/q_table.pkl",
         help="Name of loaded model"
     )
 
     parser.add_argument(
-        "--visual",
+        "--step",
         type=str,
-        default="on",
-        choices=["on", "off"],
-        help="Display board"
+        default='off',
+        choices=['off', 'on'],
+        help="Step-by-step mode to display snake movement and vision"
     )
 
     parser.add_argument(
-        "--learn",
+        "--explore",
         type=str,
-        default="on",
-        choices=["on", "off"],
-        help="Is the agent learning?"
+        default='yes',
+        choices=['yes', 'no'],
+        help="Is the agent exploring?"
     )
 
     parser.add_argument(
         "--display",
         type=str,
-        default="continuous",
-        choices=["continuous", "step-by-step"],
-        help="Display mode."
+        default='on',
+        choices=['on', 'off'],
+        help="Is the board displayed?"
     )
 
     args = parser.parse_args()
 
     try:
-        program_mode = args.program_mode
         sessions = args.sessions
         if sessions < 1:
             raise ValueError("Number of sessions must be positive.")
-        save = args.save
-        visual = args.visual
-        load = args.load
+        model_output = args.save
+        step = args.step
+        model_input = args.load
         display = args.display
-        learn = args.learn
+        explore = args.explore
 
-        print("Running in program mode:", program_mode)
+        run_snake(sessions, explore, model_input, model_output, step, display)
 
     except (TypeError, Exception, KeyboardInterrupt) as e:
         print(e)

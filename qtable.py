@@ -4,7 +4,7 @@ import os
 
 
 def load_q_table(filename="models/q_table.pkl"):
-    """loads q-table"""
+    """loads q-table from a pickle file"""
     if not isinstance(filename, str):
         print("Filename should be a string")
         return None
