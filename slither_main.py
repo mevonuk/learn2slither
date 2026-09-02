@@ -52,6 +52,28 @@ def main():
         help="Is the board displayed?"
     )
 
+    parser.add_argument(
+        "--sizex",
+        type=int,
+        default=10,
+        help="How big is the board, x dir?"
+    )
+
+    parser.add_argument(
+        "--sizey",
+        type=int,
+        default=10,
+        help="How big is the board, y dir?"
+    )
+
+    parser.add_argument(
+        "--verbose",
+        type=int,
+        default=0,
+        choices=[0, 1],
+        help="Verbose?"
+    )
+
     args = parser.parse_args()
 
     try:
@@ -63,8 +85,14 @@ def main():
         model_input = args.load
         display = args.display
         explore = args.explore
+        sizex = args.sizex
+        sizey = args.sizey
+        verbose = args.verbose
 
-        run_snake(sessions, explore, model_input, model_output, step, display)
+        run_snake(
+            sessions, explore, model_input, model_output, step, display,
+            sizex, sizey, verbose
+            )
 
     except (TypeError, Exception, KeyboardInterrupt) as e:
         print(e)

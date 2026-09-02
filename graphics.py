@@ -8,6 +8,8 @@ def draw_board(screen, X_SIZE, Y_SIZE):
 
     SCREEN_X, SCREEN_Y = screen.get_size()
 
+    SCREEN_Y -= 100
+
     # variables for drawing
     start_x = 10
     start_y = 10
@@ -33,6 +35,8 @@ def draw_apples(screen, environment, GREEN, RED, X_SIZE, Y_SIZE):
 
     SCREEN_X, SCREEN_Y = screen.get_size()
 
+    SCREEN_Y -= 100
+
     # variables for drawing
     start_x = 10
     start_y = 10
@@ -55,6 +59,8 @@ def draw_snake(screen, environment, X_SIZE, Y_SIZE):
 
     SCREEN_X, SCREEN_Y = screen.get_size()
 
+    SCREEN_Y -= 100
+
     # variables for drawing
     start_x = 10
     start_y = 10
@@ -71,3 +77,17 @@ def draw_snake(screen, environment, X_SIZE, Y_SIZE):
             pygame.draw.circle(
                 screen, WHITE,
                 (x + end_x / X_SIZE / 2, y + end_y / Y_SIZE / 2), 2, 0)
+
+
+def draw_text(screen, caption, size, loc_x, loc_y):
+
+    WHITE = [255, 255, 255]
+    BLACK = [0, 0, 0]
+
+
+    font = pygame.font.Font('freesansbold.ttf', size)
+
+    text = font.render(caption, True, BLACK, WHITE)
+    textRect = text.get_rect()
+    textRect.center = (loc_x, loc_y)
+    screen.blit(text, textRect)

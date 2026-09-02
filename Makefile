@@ -2,6 +2,10 @@ VENV = venv
 PYTHON = $(VENV)/bin/python
 PIP = $(VENV)/bin/pip
 
+SIZEX ?= 10
+SIZEY ?= 10
+FILEIN ?= 'models/q_table40000.pkl'
+
 setup:
 	python3 -m venv $(VENV)
 	$(PIP) install --upgrade pip
@@ -30,13 +34,13 @@ deactivate:
 	@echo "deactivate"
 
 train:
-	$(PYTHON) slither_main.py --sessions 100 --load None --display on --explore yes --step off
+	$(PYTHON) slither_main.py --sessions 20 --load None --display on --explore yes --step off --sizex $(SIZEX) --sizey $(SIZEY)
 
 evaluate:
-	$(PYTHON) slither_main.py --sessions 10 --load models/q_table10000.pkl --display on --step off --explore no
+	$(PYTHON) slither_main.py --sessions 10 --load $(FILEIN) --display on --step off --explore no --sizex $(SIZEX) --sizey $(SIZEY)
 
 stepit:
-	$(PYTHON) slither_main.py --sessions 1 --load models/q_table10000.pkl --display on --step on --explore no
+	$(PYTHON) slither_main.py --sessions 1 --load $(FILEIN) --display on --step on --explore no --sizex $(SIZEX) --sizey $(SIZEY)
 
 clean:
 	rm -rf $(VENV)

@@ -3,10 +3,13 @@ from Agent import Agent
 from qtable import save_q_table, load_q_table
 from Environment import Environment
 from Interpreter import Interpreter
-from graphics import draw_apples, draw_board, draw_snake
+from graphics import draw_apples, draw_board, draw_snake, draw_text
 
 
-def run_snake(sessions, explore, model_input, model_output, step, display):
+def run_snake(
+        sessions, explore, model_input, model_output, step, display,
+        sizex, sizey, verbose
+        ):
     """set up graphics if appropriate,
     initialize environment, agent, and interpretor,
     run loop of sessions"""
@@ -18,8 +21,8 @@ def run_snake(sessions, explore, model_input, model_output, step, display):
     RED_PENALTY = -10
 
     # set sizes of board
-    X_SIZE = 20
-    Y_SIZE = 20
+    X_SIZE = sizex
+    Y_SIZE = sizey
     aspect = X_SIZE / Y_SIZE
     # board must exceed 6 in size
     if X_SIZE * Y_SIZE < 6:
@@ -40,7 +43,7 @@ def run_snake(sessions, explore, model_input, model_output, step, display):
         LENGTH)
 
     # initialize agent
-    agent = Agent(explore)
+    agent = Agent(explore, verbose)
 
     # initialize interpreter
     interpreter = Interpreter(min(X_SIZE, Y_SIZE))
@@ -54,7 +57,8 @@ def run_snake(sessions, explore, model_input, model_output, step, display):
     state = set_snake(environment, agent, interpreter)
 
     # print initial q_table
-    print(agent.q_table)
+    if verbose:
+        print(agent.q_table)
 
     # initialize stat trackers
     max_length = LENGTH
@@ -73,10 +77,15 @@ def run_snake(sessions, explore, model_input, model_output, step, display):
         # Set the height and width of the screen
         SCREEN_Y = 500
         SCREEN_X = SCREEN_Y * aspect
-        SCREEN_SIZE = [SCREEN_X, SCREEN_Y]
+        SCREEN_SIZE = [SCREEN_X, SCREEN_Y + 100]
 
         # initialize the screen
         screen = pygame.display.set_mode(SCREEN_SIZE)
+        if explore == 'yes':
+            title = 'Snake game exploring (training on)'
+        else:
+            title = 'Snake game exploiting (training off)'
+        pygame.display.set_caption(title)
 
         # set up clock for animation
         clock = pygame.time.Clock()
@@ -90,6 +99,17 @@ def run_snake(sessions, explore, model_input, model_output, step, display):
             draw_board(screen, X_SIZE, Y_SIZE)
             draw_apples(screen, environment, GREEN, RED, X_SIZE, Y_SIZE)
             draw_snake(screen, environment, X_SIZE, Y_SIZE)
+            # draw_text(screen, deaths, steps, environment.snake.length)
+            caption = "Session " + str(deaths + 1)
+            draw_text(screen, caption, 24, SCREEN_X * 0.15, SCREEN_Y * 1.02)
+            caption = "steps = " + str(steps)
+            draw_text(screen, caption, 20, SCREEN_X * 0.15, SCREEN_Y * 1.1)
+            caption = "length = " + str(environment.snake.length)
+            draw_text(screen, caption, 20, SCREEN_X * 0.15, SCREEN_Y * 1.15)
+            caption = "max steps = " + str(max_steps)
+            draw_text(screen, caption, 20, SCREEN_X * 0.8, SCREEN_Y * 1.1)
+            caption = "max length = " + str(max_length)
+            draw_text(screen, caption, 20, SCREEN_X * 0.8, SCREEN_Y * 1.15)
 
             # update the screen
             pygame.display.flip()
@@ -144,7 +164,7 @@ def run_snake(sessions, explore, model_input, model_output, step, display):
             # longer pause for visualization
             if display == 'on':
                 clock.tick(10)
-            # periodic save of progress in case something goes wrong in long run
+            # periodic save of progress in case something goes wrong
             if explore == 'yes' and (deaths + 1) % 100 == 0:
                 save_q_table(agent.q_table, filename=model_output)
 

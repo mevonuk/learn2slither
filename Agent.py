@@ -7,10 +7,12 @@ class Agent:
                  explore='yes',
                  learning_rate=0.1,
                  discount_factor=0.95,
-                 epsilon=0.05):
+                 epsilon=0.05,
+                 verbose=0):
 
         self.learning_rate = learning_rate
         self.discount_factor = discount_factor
+        self.verbose = verbose
         if explore == 'yes':
             self.explore = True
             self.epsilon = epsilon
@@ -23,7 +25,8 @@ class Agent:
         """check if state is in table,
         if not, add with zero values"""
         if state not in self.q_table:
-            print('new state', state)
+            if self.verbose:
+                print('new state', state)
             self.q_table[state] = {
                 "left": 0.0,
                 "forward": 0.0,
@@ -51,7 +54,6 @@ class Agent:
         max_q = max(self.q_table[state].values())
         min_q = min(self.q_table[state].values())
         if max_q == min_q:
-            # print('even state', state)
             action = get_random_action()
         elif self.explore and random.random() < self.epsilon:
             action = get_random_action()
