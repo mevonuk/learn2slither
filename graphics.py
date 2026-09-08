@@ -80,14 +80,44 @@ def draw_snake(screen, environment, X_SIZE, Y_SIZE):
 
 
 def draw_text(screen, caption, size, loc_x, loc_y):
-
     WHITE = [255, 255, 255]
     BLACK = [0, 0, 0]
 
+    SCREEN_X, SCREEN_Y = screen.get_size()
+
+    aspect = SCREEN_X / SCREEN_Y
+
+    if aspect < 1:
+        size = int(aspect * size * 1.5)
+
+    size = max(8, size)
 
     font = pygame.font.Font('freesansbold.ttf', size)
 
+    # Reduce font size until the text fits horizontally
     text = font.render(caption, True, BLACK, WHITE)
+
+    while text.get_width() > SCREEN_X and size > 8:
+        size -= 1
+        font = pygame.font.Font('freesansbold.ttf', size)
+        text = font.render(caption, True, BLACK, WHITE)
+
     textRect = text.get_rect()
+
+    # Keep the requested position as the center
     textRect.center = (loc_x, loc_y)
+
+    # Move the box back onto the screen if it goes outside
+    if textRect.left < 0:
+        textRect.left = 0
+
+    if textRect.right > SCREEN_X:
+        textRect.right = SCREEN_X
+
+    if textRect.top < 0:
+        textRect.top = 0
+
+    if textRect.bottom > SCREEN_Y:
+        textRect.bottom = SCREEN_Y
+
     screen.blit(text, textRect)
